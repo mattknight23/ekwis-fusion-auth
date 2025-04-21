@@ -1,0 +1,34 @@
+{
+  "apiKey": "local-admin-key",
+  "requests": [
+    {
+      "method": "PATCH",
+      "url": "/api/tenant/default",
+      "body": {
+        "tenant": {
+          "emailConfiguration": {
+            "enabled": true,
+            "host": "smtp.office365.com",
+            "port": 587,
+            "security": "TLS",
+            "username": "youruser@example.co.uk",
+            "password": "your-app-password",
+            "fromEmail": "no-reply@ekwis.com",
+            "fromName": "Ekwis FusionAuth"
+          }
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "url": "/api/user",
+      "body": {
+        "user": {
+          "email": "matt@ekwis.com",
+          "password": "SuperSecret123"
+        },
+        "sendSetPasswordEmail": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: fusionauth
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: fusionauth
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  fusionauth:
+    image: fusionauth/fusionauth-app:latest
+    restart: unless-stopped
+    depends_on: [db]
+    ports:
+      - "9011:9011"                # local dev only
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/fusionauth
+      DATABASE_USERNAME: fusionauth
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      FUSIONAUTH_APP_KICKSTART_FILE: /kickstart/kickstart.json
+    volumes:
+      - fusionauth-config:/usr/local/fusionauth/data
+      - ./kickstart:/kickstart:ro
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on: [fusionauth]
+
+profiles:
+  dev:
+    services: [db, fusionauth]
+
+volumes:
+  db-data:
+  fusionauth-config:
+  caddy-data:
