@@ -1,35 +1,45 @@
 {
-  "apiKey": "local-admin-key",
+  "apiKeys": [
+    {
+      "key": "4737ea8520bd454caabb7cb3d36e14bc1832c0d3f70a4189b82598670f11b1bd"
+    }
+  ],
   "requests": [
     {
-      "method": "PATCH",
-      "url": "/api/tenant/default",
+      "method": "POST",
+      "url": "/api/application",
       "body": {
-        "tenant": {
-          "emailConfiguration": {
-            "enabled": true,
-            "host": "smtp.office365.com",
-            "port": 587,
-            "security": "TLS",
-            "username": "matt@ekwis.com",
-            "password": "jrmpkknrmfqjxptt",
-            "fromEmail": "no-reply@ekwis.com",
-            "fromName": "Ekwis FusionAuth"
+        "application": {
+          "name": "Ekwis Authentication",
+          "oauthConfiguration": {
+            "authorizedRedirectURLs": [
+              "http://localhost:3000/oauth-redirect"
+            ],
+            "clientSecret": "super-secret-secret-that-should-be-regenerated-for-production",
+            "enabledGrants": [
+              "authorization_code",
+              "refresh_token",
+              "password"
+            ],
+            "logoutURL": "http://localhost:3000"
           }
         }
       }
     },
     {
       "method": "POST",
-      "url": "/api/user",
+      "url": "/api/user/registration",
       "body": {
         "user": {
-          "email": "matt@ekwis.com",
-          "password": "Ekwis123!",
-          "fullName": "Matt Knight",
-          "active": true
+          "email": "Matt@ekwis.com",
+          "password": "ekwis123!",
+          "firstName": "Admin",
+          "lastName": "User" 
         },
-        "sendSetPasswordEmail": false
+        "registration": {
+          "applicationId": "3c219e58-ed0e-4b18-ad48-f4f92793ae32", 
+          "roles": ["admin"]
+        }
       }
     }
   ]

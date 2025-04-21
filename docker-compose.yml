@@ -20,11 +20,14 @@ services:
     ports:
       - "9011:9011"
     environment:
+      # --- DB creds ---
       DATABASE_URL: jdbc:postgresql://db:5432/fusionauth
       DATABASE_ROOT_USERNAME: fusionauth
       DATABASE_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
       DATABASE_USERNAME: fusionauth
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+
+      # --- Kickstart ---
       FUSIONAUTH_APP_KICKSTART_FILE: /kickstart/kickstart.json
     depends_on:
       db:
@@ -36,7 +39,7 @@ services:
   caddy:
     image: caddy:2
     restart: unless-stopped
-    profiles: ["prod"]           # run only on EC2
+    profiles: ["prod"]         # runs only on EC2
     ports:
       - "80:80"
       - "443:443"
