@@ -1,4 +1,7 @@
-.env
-db-data/
-fusionauth-config/
-caddy-data/
+*.env
+.DS_Store
+
+# Docker volumes (if mapped locally outside compose managed volumes)
+# db-data/
+# fusionauth-config/
+# caddy-data/

@@ -1,0 +1,49 @@
+name: Deploy FusionAuth to EC2
+
+on:
+  workflow_dispatch: # Allows manual triggering from GitHub UI
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }} # Specify your AWS region
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_PUBLIC_IP }} # Public IP of your EC2 instance
+          username: ${{ secrets.EC2_SSH_USERNAME }} # Use a secret for the username
+          key: ${{ secrets.EC2_SSH_KEY }} # Your EC2 private key (.pem file contents)
+          script: |
+            set -e # Exit immediately if a command exits with a non-zero status.
+            echo "Navigating to project directory..."
+            # Adjust base path if username is not ec2-user (e.g., /home/ubuntu/)
+            cd /home/${{ secrets.EC2_SSH_USERNAME }}/ekwis-fusion-auth
+            
+            echo "Pulling latest changes from main branch..."
+            git checkout main # Ensure we are on the main branch
+            git pull origin main
+            
+            echo "Stopping existing containers..."
+            docker compose down
+            
+            echo "Starting containers with updated code/config..."
+            # NOTE: Assumes .env file with secrets already exists on the server
+            # and is NOT managed by this script.
+            docker compose up -d --build --remove-orphans
+            
+            echo "Pruning old Docker images (optional)..."
+            docker image prune -af
+            
+            echo "Deployment complete!" 
