@@ -11,8 +11,8 @@
             "host": "smtp.office365.com",
             "port": 587,
             "security": "TLS",
-            "username": "youruser@example.co.uk",
-            "password": "your-app-password",
+            "username": "matt@ekwis.com",
+            "password": "jrmpkknrmfqjxptt",
             "fromEmail": "no-reply@ekwis.com",
             "fromName": "Ekwis FusionAuth"
           }
@@ -25,7 +25,9 @@
       "body": {
         "user": {
           "email": "matt@ekwis.com",
-          "password": "SuperSecret123"
+          "password": "Ekwis123!",
+          "fullName": "Matt Knight",
+          "active": true
         },
         "sendSetPasswordEmail": false
       }
