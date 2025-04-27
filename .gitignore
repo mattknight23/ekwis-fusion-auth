@@ -1,7 +1,13 @@
-*.env
+.env
+# Private keys
+*.pem
+
+# Local TLS / Certbot artefacts
+letsencrypt/
+certbot-www/
+
 .DS_Store
 
 # Docker volumes (if mapped locally outside compose managed volumes)
-# db-data/
-# fusionauth-config/
-# caddy-data/
+db-data/
+fusionauth-config/

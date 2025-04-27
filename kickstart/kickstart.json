@@ -1,27 +1,35 @@
 {
+  "variables": {
+    "faClientSecret": "${env.FA_CLIENT_SECRET}",
+    "faApiKey":       "${env.FA_API_KEY}",
+    "adminEmail":     "${env.FA_ADMIN_EMAIL}",
+    "adminPassword":  "${env.FA_ADMIN_PASSWORD}"
+  },
+
   "apiKeys": [
-    {
-      "key": "4737ea8520bd454caabb7cb3d36e14bc1832c0d3f70a4189b82598670f11b1bd"
-    }
+    { "key": "${faApiKey}" }
   ],
+
   "requests": [
     {
       "method": "POST",
       "url": "/api/application",
+      "id": "ekwisApp",
       "body": {
         "application": {
           "name": "Ekwis Authentication",
           "oauthConfiguration": {
             "authorizedRedirectURLs": [
-              "http://localhost:3000/oauth-redirect"
+              "https://auth.ekwis.com/oauth-redirect"
             ],
-            "clientSecret": "super-secret-secret-that-should-be-regenerated-for-production",
+            "clientSecret": "${faClientSecret}",
             "enabledGrants": [
               "authorization_code",
               "refresh_token",
-              "password"
+              "password",
+              "client_credentials"
             ],
-            "logoutURL": "http://localhost:3000"
+            "logoutURL": "https://auth.ekwis.com"
           }
         }
       }
@@ -31,13 +39,13 @@
       "url": "/api/user/registration",
       "body": {
         "user": {
-          "email": "Matt@ekwis.com",
-          "password": "ekwis123!",
+          "email": "${adminEmail}",
+          "password": "${adminPassword}",
           "firstName": "Admin",
-          "lastName": "User" 
+          "lastName": "User"
         },
         "registration": {
-          "applicationId": "3c219e58-ed0e-4b18-ad48-f4f92793ae32",
+          "applicationId": "${ekwisApp}",
           "roles": ["admin"]
         }
       }

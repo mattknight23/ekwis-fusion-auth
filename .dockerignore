@@ -1,0 +1,16 @@
+# Do not send secrets or unnecessary files to the Docker build context
+.env
+.git
+.gitignore
+.DS_Store
+
+# Local TLS / ACME artefacts
+letsencrypt/
+certbot-www/
+
+# Local data volumes
+db-data/
+fusionauth-config/
+
+# Logs
+*.log
