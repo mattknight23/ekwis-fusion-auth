@@ -1,9 +1,0 @@
-{
-    email matt@ekwis.com
-}
-
-auth.ekwis.com {
-    reverse_proxy fusionauth:9011
-    encode gzip
-    log
-}
